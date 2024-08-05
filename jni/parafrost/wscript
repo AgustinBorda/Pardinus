@@ -5,59 +5,59 @@ import shutil
 import subprocess
 
 def options(opt):
-    opt.load('compiler_cxx')
-    opt.load('java')
+        opt.load('compiler_cxx')
+        opt.load('java')
 
-def configure(conf):
-    conf.load('compiler_cxx')
-    conf.load('java')
-    conf.check_jni_headers()
-    PARAFROST = conf.path.abspath() + '/parafrost'
-    shutil.rmtree(PARAFROST, True)
-    subprocess.check_call(['git', 'clone', 'https://github.com/AgustinBorda/ParaFROST.git', PARAFROST])
+        def configure(conf):
+                conf.load('compiler_cxx')
+        conf.load('java')
+                conf.check_jni_headers()
+        PARAFROST = conf.path.abspath() + '/parafrost'
+                shutil.rmtree(PARAFROST, True)
+                subprocess.check_call(['git', 'clone', 'https://github.com/AgustinBorda/ParaFROST.git', PARAFROST])
 
 
-def build(bld):
-    DEFINES = ['__STDC_LIMIT_MACROS', '__STDC_FORMAT_MACROS']
-    INCLUDES = ['.','./parafrost'] 
-    CXXFLAGS = [ '-w', '-O3', '-fPIC', '-ffast-math']
-    
-    bld.objects(source = ['parafrost/src/cpu/addinc.cpp', 'parafrost/src/cpu/analyze.cpp',
-                        'parafrost/src/cpu/assume.cpp', 'parafrost/src/cpu/autarky.cpp',
-                        'parafrost/src/cpu/backjump.cpp', 'parafrost/src/cpu/backtrack.cpp',
-                        'parafrost/src/cpu/bcp.cpp', 'parafrost/src/cpu/binary.cpp',
-                        'parafrost/src/cpu/bve.cpp', 'parafrost/src/cpu/clause.cpp',
-                        'parafrost/src/cpu/control.cpp', 'parafrost/src/cpu/debinary.cpp',
-                        'parafrost/src/cpu/decide.cpp', 'parafrost/src/cpu/dimacs.cpp',
-                        'parafrost/src/cpu/elimination.cpp', 'parafrost/src/cpu/equivalence.cpp',
-                        'parafrost/src/cpu/histogram.cpp', 'parafrost/src/cpu/input.cpp',
-                        'parafrost/src/cpu/lcve.cpp', 'parafrost/src/cpu/mdm.cpp',
-                        'parafrost/src/cpu/mdmpump.cpp', 'parafrost/src/cpu/minimize.cpp',
-                        'parafrost/src/cpu/mode.cpp', 'parafrost/src/cpu/model.cpp',
-                        'parafrost/src/cpu/options.cpp', 'parafrost/src/cpu/printer.cpp',
-                        'parafrost/src/cpu/probe.cpp', 'parafrost/src/cpu/proof.cpp',
-                        'parafrost/src/cpu/recycle.cpp', 'parafrost/src/cpu/reduce.cpp',
-                        'parafrost/src/cpu/rephase.cpp', 'parafrost/src/cpu/restart.cpp',
-                        'parafrost/src/cpu/sclause.cpp', 'parafrost/src/cpu/shrink.cpp',
-                        'parafrost/src/cpu/simplify.cpp', 'parafrost/src/cpu/statistics.cpp',
-                        'parafrost/src/cpu/subsume.cpp', 'parafrost/src/cpu/ternary.cpp',
-                        'parafrost/src/cpu/transitive.cpp', 'parafrost/src/cpu/uip.cpp',
-                        'parafrost/src/cpu/vivify.cpp','parafrost/src/cpu/vmap.cpp', 
-                        'parafrost/src/cpu/walk.cpp','parafrost/src/cpu/watch.cpp'],
-                target = 'parafrost-utils',
-                includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
+                def build(bld):
+                        DEFINES = ['__STDC_LIMIT_MACROS', '__STDC_FORMAT_MACROS']
+                        INCLUDES = ['.','./parafrost'] 
+                        CXXFLAGS = [ '-w', '-O3', '-fPIC', '-ffast-math']
 
-    bld.objects(source = ['parafrost/src/cpu/solve.cpp', 'parafrost/src/cpu/solveinc.cpp'],
-                target = 'parafrost-core', use = 'parafrost-utils', 
-                includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
-     
-    bld.shlib(source = 'kodkod_engine_satlab_ParaFrost.cpp',
-              target = 'parafrost', use = 'parafrost-core', uselib = 'JAVA',
-              includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
-            
-def distclean(ctx):
-    from waflib import Scripting
-    Scripting.distclean(ctx)
-    shutil.rmtree(ctx.path.abspath() + '/parafrost', True)
-    
-    
+                        bld.objects(source = ['parafrost/src/cpu/addinc.cpp', 'parafrost/src/cpu/analyze.cpp',
+                                        'parafrost/src/cpu/assume.cpp', 'parafrost/src/cpu/autarky.cpp',
+                                        'parafrost/src/cpu/backjump.cpp', 'parafrost/src/cpu/backtrack.cpp',
+                                        'parafrost/src/cpu/bcp.cpp', 'parafrost/src/cpu/binary.cpp',
+                                        'parafrost/src/cpu/bve.cpp', 'parafrost/src/cpu/clause.cpp',
+                                        'parafrost/src/cpu/control.cpp', 'parafrost/src/cpu/debinary.cpp',
+                                        'parafrost/src/cpu/decide.cpp', 'parafrost/src/cpu/dimacs.cpp',
+                                        'parafrost/src/cpu/elimination.cpp', 'parafrost/src/cpu/equivalence.cpp',
+                                        'parafrost/src/cpu/histogram.cpp', 'parafrost/src/cpu/input.cpp',
+                                        'parafrost/src/cpu/lcve.cpp', 'parafrost/src/cpu/mdm.cpp',
+                                        'parafrost/src/cpu/mdmpump.cpp', 'parafrost/src/cpu/minimize.cpp',
+                                        'parafrost/src/cpu/mode.cpp', 'parafrost/src/cpu/model.cpp',
+                                        'parafrost/src/cpu/options.cpp', 'parafrost/src/cpu/printer.cpp',
+                                        'parafrost/src/cpu/probe.cpp', 'parafrost/src/cpu/proof.cpp',
+                                        'parafrost/src/cpu/recycle.cpp', 'parafrost/src/cpu/reduce.cpp',
+                                        'parafrost/src/cpu/rephase.cpp', 'parafrost/src/cpu/restart.cpp',
+                                        'parafrost/src/cpu/sclause.cpp', 'parafrost/src/cpu/shrink.cpp',
+                                        'parafrost/src/cpu/simplify.cpp', 'parafrost/src/cpu/statistics.cpp',
+                                        'parafrost/src/cpu/subsume.cpp', 'parafrost/src/cpu/ternary.cpp',
+                                        'parafrost/src/cpu/transitive.cpp', 'parafrost/src/cpu/uip.cpp',
+                                        'parafrost/src/cpu/vivify.cpp','parafrost/src/cpu/vmap.cpp', 
+                                        'parafrost/src/cpu/walk.cpp','parafrost/src/cpu/watch.cpp'],
+                                        target = 'parafrost-utils',
+                                        includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
+
+                                        bld.objects(source = ['parafrost/src/cpu/solve.cpp', 'parafrost/src/cpu/solveinc.cpp'],
+                                                        target = 'parafrost-core', use = 'parafrost-utils', 
+                                                        includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
+
+                                        bld.shlib(source = 'kodkod_engine_satlab_ParaFrost.cpp',
+                                                        target = 'parafrost', use = 'parafrost-core', uselib = 'JAVA',
+                                                        includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
+
+                                        def distclean(ctx):
+        from waflib import Scripting
+        Scripting.distclean(ctx)
+        shutil.rmtree(ctx.path.abspath() + '/parafrost', True)
+
+
