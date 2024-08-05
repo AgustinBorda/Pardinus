@@ -47,13 +47,13 @@ def build(bld):
                         target = 'parafrost-utils',
                         includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
 
-                        bld.objects(source = ['parafrost/src/cpu/solve.cpp', 'parafrost/src/cpu/solveinc.cpp'],
-                                        target = 'parafrost-core', use = 'parafrost-utils', 
-                                        includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
+        bld.objects(source = ['parafrost/src/cpu/solve.cpp', 'parafrost/src/cpu/solveinc.cpp'],
+                        target = 'parafrost-core', use = 'parafrost-utils', 
+                        includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
 
-                        bld.shlib(source = 'kodkod_engine_satlab_ParaFrost.cpp',
-                                        target = 'parafrost', use = 'parafrost-core', uselib = 'JAVA',
-                                        includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
+        bld.shlib(source = 'kodkod_engine_satlab_ParaFrost.cpp',
+                        target = 'parafrost', use = 'parafrost-core', uselib = 'JAVA',
+                        includes = INCLUDES, cxxflags = CXXFLAGS, defines = DEFINES)
 
 def distclean(ctx):
         from waflib import Scripting
